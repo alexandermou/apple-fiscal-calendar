@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Fiscal Cal">
+<meta name="theme-color" content="#f5f5f7">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAU4UlEQVR4nO2de5BcVZ3Hv79z7u3ume6eF5MJmSUghiQCIRoFl+BCSCQ8lFr/0fIBS2mgKjwE11VqtdYFdqtQ/9Ddrd0tQWRRtBCNIG6hGyMuJVaFJDxVAgkvM8MjGQjMq9PT3ffec377x81MMpM5Sffte7svW+dT+WtSfc+53/u9j3Pv+X0P4YuvwmKZD9HuDljSizWHxYg1h8WINYfFiDWHxYg1h8WINYfFiDWHxYg1h8WINYfFiDWHxYg1h8WINYfFiDWHxYg1h8WINYfFiDWHxYg1h8WINYfFiDWHxYg1h8WINYfFiDWHxYg1h8WINYfFiNPKxoggAFCU32oGc9MdAIhAkTrADGY03YX2i1A/LTKHFGCGVlABQze+f0RwSDgQBKWjHCGi6d/6jCCSwJLgkiOgI+0BUiBCoyRujvA0VVMMge6iWDaQKWQbPmsUY+c+f3RMac3oEEJA6wZ+LgWUz6rGslMM9jun9EfZ65GSemEkCA5ouCSzpBs5PGkQIQLJmkMIaJ+hsP6M3OfPK6w+KbugEPEp5+2y3rqndv8fKvc+NeVXWHaQqk8aQVBTemGvc83FhU+s6jipz8lnolzTlcbzb/qbn6v+4LHyziEPnYKorot8GkSIBiVXZS8EdIUH++Sdn+m75NRc+EdGxLummD6gO4a9L9w3tuOlmsyLo0tDBGLoir5qTfHWS7sHpg9JtJvCTAc8xd94qHTrlklfMzl09N1puwjNkJQ5QlE+uCTzi6v6F3XJ8ElKRH0YBMAMzWDAEQgY124a+97vSkeXRhK0x7d9um/jOXkAgT7YgWhd4Ok+OAIAtu7xPnbH/tEpDbM/0iBCMyQylBUE9vn4XvngxgWLumSgIAhSRBcFABGkgCOgNCRwxyd716/sUFNaGvZACqiyvvnS7o3n5AMNZjgCIqozABAgCI4AA57Ch07O/GRDP2mjgmkQoUmSes/BCndf0TeQF4GCI+PcshQHT+IfXd53XI+jfT5SbimgpvSaFR03XdQVaMgmTtYjISAj4StcsDT7lY90q7Lx2LRXhOaJ3xxSQFf0utNzFy7LKR2zKCGCoBgLi/L68wtcZXGELswgQbdc0kXT7zZiJxzTfmlNYUH/PMcmDSLE0ET8m2QIQTeuLSY6EJcEZlx9Tr6nz1HBrMMvBXSVVy/Pnr8kqxkJXXKJoBl9nWLD6jzXWM45Nu0WIRZiVo4ISqFQlGedmKHDnq5jhwgMLCzIFYMuPH14QwQg4HVLsog6MKm3DwADFyzNQdLhDaVBhFiI2RyCAJ+XDzjdOWJO5Ho+Q3g8zlzsQs96zGQGHPrA4gwivqSul/DxdvmAUywIrQ/tbBpEiIUkbivcnSNHUGs+AhyXF3NeVTIAQl++Rd8Uu3LkujT3dWm7RYiFRBSM9u0iYluGIb7p77GjDB/D0iBCkyRijkQv5nW21bI+tL0DybVl53NYjFhzWIxYc1iMWHNYjFhzWIxYc1iMWHNYjFhzWIxYc1iMWHNYjFhzWIxYc1iMWHNYjNivsu/4DiTXVjLzOXTr6n1NUxn8Vs3nMO1sGkRokpjNoRnIiGdH/PGqFvVVC0YmnDL56FANctY0qHCW3vahGpBstXFYX/TsiD9RUkIe2tk0iBDPxuPdHDOExNtjavuQx1Gr0etsiIA3SuqJV3xkxOENMQAHm3dXw/Ky5GCAgM27quzNqgxIgwixEP9tRRCg+J6nphKdWKsYRPjVrurEWCCdWWen0qCseHKP98JbAVFSpejhzOFA8/1/qiBDcw5M20WIhfjNoRiiU9z/xNTTr/tSIIkyTs0goOzxN39TIneeUlUh4FX1TZsnCVDxtw8ASkMSvrut/NKrnszONUcaRGie+M3BDAhUPb7y3lGeLv6Jd/thqdL1Px9/8TVPHHFgEB65vNi07cDP/lhxBby4DeIrOBLP7PO/+sD4vB1IgwjNk8hoRWvIDnr65drGn44JgqB4Ht2ZEWgQwRG4beuB7z9SkgVjgblmiCxd/ePRx17xMhJKx5CGw4BiBBquxL5JddkPR0sVNlXZp0GEJkkwnyOsc79oZcddl/UNdkkgemASgFBfABNV/eUHJu78fUl2CnXUrRGBfe7K0Lc/3nvV2fnwj5EtQjhUWblld3XDPaN7x5XI0tGfadouQjMkaA5MV7sP9DrXnlu48uz8CT1NFRS/Nq5+vav6rYdLz7/qiYKo50lTCOiAEWD9abkb1xXXLss5TVwrA43Hh2t3bi/fta0MQGSO4YyQtosQmWTNgek8LtS42CtXDWZWLXZ7OhpI0wvPikBj21Dt8Ve80riCSzLTQNxRmNaiKxqSTh1033O8u3LQrb8DM30YHlM7/lzbNeLDZ+oUaCSdp+0iRCNxcyCMHCEEAeAzVKS4xrAeOUPhgC3CZVkKaAZ7DMURBzACcIgyFIb5NUoaRGiUVkRNMiNgkIRwIocugQHN0ceE4Q9Fhoiiv3oIHxei3ePTIEKjtC6klqPKGiOaE36jfizSIEL92E/2FiPWHBYjrbuthKlt0SI4w1yvmaDFaBBYsgag6Yg4jTp+TAwCaxLNpKS0XYSGaIU5wpGCqjIChhPpaSx8NykJWYrwqYLAgrUSmcDpAAAdNN4DgCSIoKpSe5qIG9yNtosQgcTNIQVURUPQOcuza5dk3784c3CIX5864RkWaH50yPvN7uqOYU9NadEpuO71AwRrTVK53Qurr39k/5aV5ZdXVoYbShhkEDgYzg78vut9v+1e9VruBOia1DVF9b7OarsI0UjyPQdBALqsP7yi4+/XF9cvzzW/yWf2+t94aPLeHWVkiOSxP0VKVkrmu4IDf7dv09VvPLiwug8gkGx80BJ+36WS23tf37lfO3HD3tyg9CeO7Y8UiBCZpMxBBMFQPt/80e5bLu7C9Cgu8u2acShr9idPTV23aWy0ooV7tBfYkpWShVXlF//rpa+vmnwGTpcSLgONP3GEHSACJAcIDuzLLvrbd9+wqf/DMigdxR9pEKEZkjKHJKgpffsVx21cnQ/vjrHkgerp9PHHX/XW/tubFcVsOHUEay07z5h66ZFnbugNJn2n6LCKZovDYZAi6egqVPWzy2+6e+FfS3/c5I+2i9AkiQxlpYCq8IbzixtX5/3pzO9YCNPHPYWzFmf+41O92p9/IiCBQbJble558eu9wWTgFF0OmndGuGWHAyUyyun8zsv/+t7STi07BM9z5rZdhBgain2LRNA+9/fKf/lYdzghJfapchmJQONzZ+XXnp6bNxZesNZO8Yt7f3bG5DO+2+VwpOGJGcka5HaqA/8+dDvTPBqmQYTmSSD7nMA1vu68QndO6MSm+BLAjH+8sEsccUUlsBKZBdXXr3vjQe10OdEGrsdCslJO8byJJ9eN7dBOXs6+eLRdhFhIYA6pRqZTXP6BTk7y/Wt4opz77swpf+Fqj8VhLUnWkB0fHdvRXx1hcWR+bGwwCNr/7FsPA3OHP20XIRbij7fmgBf1ysFuiWSWK5hBA46g9y5yEfCR7Zw59XLSX9kEGMJZMTXs6Cl92M0lPSI0SfzB+Aj4lH6n00089ju8kJ6xaG7stwZBBysqw0QiucsGAGIGuSfXRrqCCSZnpq00iBALyUwwbuFXadMXcNWqYlXG/K/S0yBCk7zjv8qmoY657byTCqkt/z+w5rAYseawGLHmsBix5rAYseawGLHmsBix5rAYseawGLHmsBix5rAYseawGLHmsBhJxBytrCM3TY9rogCgwQ4YGkqDCE2SiDmaiVZqFNdQNeLGPanYhKniIQ0iNEncCcYAJO2d1J7iRGdAYXoSw9Do3Gk9YV3CcHYAnOyEGwbA6o1MT0XkifXMtIo0iBALcWefa5BLL474e95WhKTSg0OEQE3xI3+uwaXD2yEARA91vQ8UPUOnHjQJ1t7W4mkVp0twMGPENIgQz8bj3iCkgF/Wv3yuAiA5WZQGGH/a67+8z5+T6qdIQFUf6l5VdnsFB8k9fBBAJO7rXT0dg36ItosQC/GbQzOQobu2l33FlNiaAWEs8He2lrU/99LNIKlr+3In3Nd3LgUH6q+FbwhNQqqpF/JLH+45k9Ss2edIgQixkIg5ZJaeG/K+/r8lSYmse+IrOAK/fbH2w60HROc8+b1MgnTtKydu2J9dJHVVzVeU1gwMUgAD173rmoosCJ47wzcNIjRPUrPPRae49X8mtw97GQlfxXnq+AquxP6yvvzut9nQfQ0SujaSXXTtu28gVZUcxHj90CQ0kVt7858Xf+63fX/lBKV5zdd2EZonmfccDCYEzB+9ff+W3VVXhqtPQGloBkf6p/TB9Yhciadf9y/+z/1vjCtyjYHwiqQMJu/rv+DKZTeXIGUwqUkEJDVEWEzQ6D8NCkgqkkJVpKrccvIN/3TC38igFBhslwYRmiTB8BYicMDQ+NrFXdevKQ4UYjBiLeA7Hi3/w4MTpSklOo4d7ixZKbfn/aWd3xy6ff3Ek9A+hAuKlGfECtoD0bP5ZV961zVb+s6lYIKBoxcGpEGEyCSbYBw+JXFZD/Q7V/xlfv3S7HsWusUcHfF0fwyUxh/3+r/eVf3lzsru1zxkhHDqHSJKVkp2APLC8e2feuvh0yvDS6sjaCgzjgDW+9yeHcXT/rt39eaeszyZd8zXjLm/ToEI0WhFvPVM8jckdRRE1iE0GPvNjIlJhYDhUrjyTUP3bxGm08o8SEJN9fiToAbcEcYIlmReuV1ghpqSrBp9yG27CBFohTkwnfzNgFIRvzoICUFNrUchWQOsSXK0h1PWkgOANImIi3KkQISGaFEOaZj8jfAaG+m227wiM+c6RfzsQk0OedIgQkO0LqQ2hNHm9HG08IOtuQPtF6Ee7HwOi5GWXjmI0MASNLOJ5fkrTIiO9qb54MuGZrvQfhHqp0XmkALM0AoqiHTbJIJDwkG4EE6UhWxo+rf+9J2/USTBJUdEv/G3XYRGSdwc4WmqphgC3UWxbCBTyDZ81ijGzn3+6JjSmtEhhGhsfB8OI1WNZacY7HdO6Y+y1yMl9cJIEBzQB0eSjRyeNIgQgWTNIQS0z1BYf0bu8+cVVp+UXRD1FeHbZb11T+3+P1TufWrKr7DsqHeFM0FQU3phr3PNxYVPrOo4qc/JZ6Jc05XG82/6m5+r/uCx8s4hD52izs+taRAhGgm+5xACusKDffLOz/RdcurBzO9oq0kAh9Iadwx7X7hvbMdLNZk/xqdIIhBDV/RVa4q3Xto98+o62k1hpgOe4m88VLp1y6SvmQyLyh76VbtFaIakzBGK8sElmV9c1b+oS4ZPUiLqwyCm12BmwBEIGNduGvve70pHl0YStMe3fbpv4zl5AIE+2IFoXeDpPoSTQ7fu8T52x/7RKW1adBjpEKEZEhnKCgL7fHyvfHDjgkVdMpgOd25mQgoRpIAjoDQkcMcne9ev7DhKcm+42u/Nl3ZvPCcfLgXtCIgmpg3SdK40A57Ch07O/GRDP2mjgmkQoUmSes/BCndf0TeQF4GCE+tULCkOnsQ/urzvuB5n3klQ4Tq/a1Z03HRRV6APrTQQCwSE8zMuWJr9yke6Vdl4bNorQvMkModUV/S603MXLsspHbMoIYKgGAuL8vrzC1zlI8OjmUGCbrmki6bfbcROOKb90prCgv55jk0aRIihifg3yRCCblxbTHQgLgnMuPqcfE+fo4JZh18K6CqvXp49f0k2DKVPAiJoRl+n2LA6zzWWc45Nu0WIhfgTjJVCoSjPOjFDSCoQPmyIgYUFuWLQhacPb4gABLxuSRYJJ8USwMAFS3OQs+ZipUGEWIg/+xw+Lx9wunOJJzuHx+PMxXOTnZkBhz6wOIOEo2rDx9vlA06xILQ+tLNpECEWkritcHeOHEGt+QhwXF7MeVXJAAh9+RZ9U+zKkXvk0gztFiEWElEw2reLiG0Zhvimv8eOMnwMS4MITZKIOVo5XaLt2edt70Bybdn5HBYj1hwWI9YcFiPWHBYj1hwWI9YcFiPWHBYj1hwWI9YcFiPWHBYj1hwWI9YcFiPWHBYj9qvsO74DybWVzHwO3bp6X9NUhiTSHU0dmH8+RwpEaJK4460ZyIhnR/zxqhaJhbOGhFMmHx2qQc6aBhXO0ts+VEPCKRhhfdGzI/5ESQl5aGfTIEI8G493c8wQEm+Pqe1DHicZQ8MMAt4oqSde8ZERhzfEABxs3l0Ny8uSIwx827yryt6syoA0iBAL8d9WBAGK73lqKtGJtYpBhF/tqk6MBdKZdXYqDcqKJ/d4L7wVECVVih7OHA403/+nCjJzk0DbLkIsxG8OxRCd4v4npp5+3ZcCSZRxagYBZY+/+ZsSufOUqgoBr6pv2jxJgIq/fQBQGpLw3W3ll171wmy/Wf+bAhGaJ35zMAMCVY+vvHeUp4t/4t1+WKp0/c/HX3zNE0ccGIRHLi82bTvwsz9WXAEvboP4Co7EM/v8rz4wPm8H0iBC8ySTfa4hO+jpl2sbfzomCILieXRnRqBBBEfgtq0Hvv9ISRaMBeaaIbJ09Y9HH3vFy0goHUMaDgOKEWi4Evsm1WU/HC1V2FRlnwYRmiTBfI6wzv2ilR13XdY32CXRXFJiqC+Aiar+8gMTd/6+JDvF3MUKZkME9rkrQ9/+eO9VZ+fDP0a2COFQZeWW3dUN94zuHVcie4xVTtouQjMkG1IbVrsP9DrXnlu48uz8CT1NFRS/Nq5+vav6rYdLz7/qiUJdmd9CQAeMAOtPy924rrh2Wa6ZpdcCjceHa3duL9+1rQygzvVv2i5CZBJPMJ6JdS72ylWDmVWL3Z6OBtL0wrMi0Ng2VHv8Fa80ruCSzDQQdxSmteiKhqRTB933HO+uHHTr78BMH4bH1I4/13aN+PCZOgUaSedpuwjRaEW8dRjrHASAz1CR4hrDeuQMhQO2CJdlKaAZ7DEURxzACMAhylAY5tcoaRChUVoRNRnGOpOEcKKvyMeA5uhjwvCHIkNE0V89hI8L0e7xaRChUVoXUstRZY0RzW3OlU6DCPVjP9lbjFhzWIxYc1iMWHNYjFhzWIxYc1iMWHNYjFhzWIxYc1iMWHNYjFhzWIxYc1iMWHNYjFhzWIxYc1iMWHNYjFhzWIxYc1iMWHNYjFhzWIxYc1iMWHNYjFhzWIxYc1iMWHNYjPwf6jkIVqsdwlgAAAAASUVORK5CYII=">
+<title>Apple Fiscal Calendar</title>
+<style>
+  :root{
+    --bg: #f5f5f7;
+    --surface: #ffffff;
+    --border: #e5e5e7;
+    --border-soft: #ececee;
+    --ink: #1d1d1f;
+    --ink-dim: #6e6e73;
+    --ink-faint: #86868b;
+    --accent: #0071e3;
+    --accent-soft: #e8f2fe;
+    --today: #ff3b30;
+    --leap: #ff9500;
+    --leap-soft: #fff2e2;
+    --radius-lg: 18px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body{
+    height: 100%;
+    overscroll-behavior-y: contain;
+  }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "tnum" 1;
+    font-variant-numeric: tabular-nums;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  button, select, .calrow, .todaybtn, .navbtn{
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .wrap{
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 32px 22px 70px;
+  }
+
+  header.top{
+    margin-bottom: 22px;
+  }
+
+  h1{
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 4px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .subtitle{
+    color: var(--ink-dim);
+    font-size: 13px;
+    letter-spacing: -0.005em;
+  }
+
+  .controls-row{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .seg{
+    display:flex;
+    gap: 2px;
+    background: #e8e8ed;
+    border-radius: 10px;
+    padding: 3px;
+  }
+  .seg button{
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    color: var(--ink-dim);
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease, box-shadow .15s ease;
+    font-family: inherit;
+  }
+  .seg button:hover{ color: var(--ink); }
+  .seg button.active{
+    background: #ffffff;
+    color: var(--ink);
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0,0,0,.14);
+  }
+  .seg.modeswitch button.active{ color: var(--accent); }
+
+  .navbar{
+    display:flex;
+    align-items:center;
+    gap: 14px;
+    margin: 20px 0 24px;
+    flex-wrap: wrap;
+  }
+
+  .navbtn{
+    width: 40px; height: 40px;
+    display:flex; align-items:center; justify-content:center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--ink);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 17px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    transition: background .12s ease, transform .1s ease;
+  }
+  .navbtn:hover{ background: var(--bg); }
+  .navbtn:active{ transform: scale(0.94); }
+  .navbtn:disabled{ opacity: .3; cursor: default; }
+  .navbtn:disabled:hover{ background: var(--surface); }
+
+  .period-label{
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    min-width: 200px;
+  }
+  .period-sub{
+    font-size: 12.5px;
+    color: var(--ink-dim);
+    margin-top: 2px;
+  }
+
+  .badge{
+    display:inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .badge.leap{ background: var(--leap-soft); color: var(--leap); }
+  .badge.today{ background: var(--accent-soft); color: var(--accent); }
+
+  .spacer{ flex: 1; }
+
+  select#yearSelect{
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 13px;
+    font-family: inherit;
+    padding: 8px 14px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    box-shadow: 0 1px 2px rgba(0,0,0,.04);
+  }
+
+  .todaybtn{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 500;
+    font-family: inherit;
+    padding: 8px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,.04);
+  }
+  .todaybtn:hover{ background: var(--bg); }
+
+  .card{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 1px 2px rgba(0,0,0,.03), 0 6px 20px rgba(0,0,0,.03);
+  }
+
+  /* Year view */
+  .year-summary{
+    font-size: 13.5px;
+    color: var(--ink-dim);
+    margin-bottom: 18px;
+    padding: 14px 18px;
+  }
+  .year-summary b{ color: var(--ink); font-weight: 600; }
+
+  .qgrid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 640px){ .qgrid{ grid-template-columns: 1fr; } }
+
+  .qcard{ padding: 16px 18px 18px; }
+  .qcard.current{ border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+
+  .qcard-head{
+    display:flex; justify-content: space-between; align-items:baseline;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .qcard-head .qname{ font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
+  .qcard-head .qrange{ font-size: 12px; color: var(--ink-dim); }
+
+  .minigrid-wrap{ margin-top: 10px; }
+  .minigrid-head{
+    display:flex; justify-content: space-between;
+    font-size: 11.5px;
+    color: var(--ink-dim);
+    margin-bottom: 5px;
+    padding: 0 2px;
+  }
+  .minigrid-head .cur{ color: var(--accent); font-weight: 600; }
+
+  /* Quarter view */
+  .monthcard{ padding: 16px 18px 18px; margin-bottom: 14px; }
+  .monthcard-head{
+    display:flex; justify-content: space-between; align-items:baseline;
+    margin-bottom: 12px;
+  }
+  .monthcard-head .mtitle{ font-weight:700; font-size:15px; letter-spacing: -0.01em; }
+  .monthcard-head .msub{ color:var(--ink-faint); font-weight:400; font-size: 12.5px; }
+  .monthcard-head .mrange{ font-size:12px; color:var(--ink-dim); }
+
+  /* Day grids — Calendar-app style */
+  table.calgrid{
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 3px;
+    table-layout: fixed;
+  }
+  table.calgrid th{
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    text-align: center;
+    padding: 0 0 6px;
+  }
+  table.calgrid tr.calrow{ cursor: pointer; }
+  table.calgrid tr.calrow.current-row td.daycell{ background: var(--accent-soft); }
+  table.calgrid tr.calrow.extra-row td.daycell{ box-shadow: inset 0 0 0 1.5px var(--leap); }
+  table.calgrid tr.calrow:hover td.daycell{ background: #eef0f3; }
+  table.calgrid tr.calrow.current-row:hover td.daycell{ background: #d9ecfd; }
+
+  td.daycell{
+    text-align: center;
+    vertical-align: middle;
+    padding: 8px 2px;
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--bg);
+    border-radius: 8px;
+  }
+  td.daycell.outside{ opacity: .32; }
+  td.daycell .monthtag{
+    display: block;
+    font-size: 8.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
+    margin-bottom: 2px;
+  }
+  td.daycell .num{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+  }
+  td.daycell.today .num{ background: var(--today); color: #fff; font-weight: 700; }
+
+  table.calgrid.mini{ border-spacing: 1.5px; }
+  table.calgrid.mini th{ font-size: 8px; padding: 0 0 3px; }
+  table.calgrid.mini td.daycell{ font-size: 9.5px; padding: 3px 1px; border-radius: 5px; }
+  table.calgrid.mini td.daycell .monthtag{ font-size: 6px; margin-bottom: 0; }
+  table.calgrid.mini td.daycell .num{ width: 15px; height: 15px; }
+
+  table.weektable{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 20px;
+  }
+  table.weektable th{
+    text-align: left;
+    color: var(--ink-faint);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  table.weektable td{
+    padding: 11px 12px;
+    border-bottom: 1px solid var(--border-soft);
+    color: var(--ink-dim);
+    cursor: pointer;
+  }
+  table.weektable tr:hover td{ background: var(--bg); }
+  table.weektable tr.current td{ color: var(--accent); background: var(--accent-soft); }
+  table.weektable td.range{ color: var(--ink); font-weight: 500; }
+
+  .infoline{
+    font-size: 13px;
+    color: var(--ink-dim);
+    margin-top: 16px;
+  }
+  .infoline b{ color: var(--ink); font-weight: 600; }
+
+  /* Week view */
+  .weekcard{ padding: 26px 26px 24px; }
+  .weekcard .range{ font-size: 24px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 4px; }
+  .weekcard .breadcrumb{ font-size: 12.5px; color: var(--ink-dim); margin-bottom: 20px; }
+  .daystrip{ display:grid; grid-template-columns: repeat(7,1fr); gap: 8px; }
+  .day{ background: var(--bg); border-radius: var(--radius-md); padding: 14px 6px; text-align:center; }
+  .day.today{ background: var(--today); }
+  .day .dname{
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.04em; color: var(--ink-faint); margin-bottom: 8px;
+  }
+  .day.today .dname{ color: rgba(255,255,255,.75); }
+  .day .dnum{ font-size: 16px; font-weight: 700; color: var(--ink); }
+  .day.today .dnum{ color: #fff; }
+
+  footer.notes{
+    margin-top: 36px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--ink-faint);
+  }
+  footer.notes b{ color: var(--ink-dim); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>Apple Fiscal Calendar</h1>
+    <div class="subtitle" id="subtitleText"></div>
+
+    <div class="controls-row">
+      <div class="seg modeswitch" id="modeSwitch">
+        <button data-mode="fiscal">Fiscal</button>
+        <button data-mode="calendar">Calendar</button>
+      </div>
+      <div class="seg" id="tabs">
+        <button data-view="year">Year</button>
+        <button data-view="quarter">Quarter</button>
+        <button data-view="month">Month</button>
+        <button data-view="week">Week</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="navbar">
+    <button class="navbtn" id="prevBtn">&#8249;</button>
+    <div>
+      <div class="period-label" id="periodLabel"></div>
+      <div class="period-sub" id="periodSub"></div>
+    </div>
+    <button class="navbtn" id="nextBtn">&#8250;</button>
+    <div class="spacer"></div>
+    <select id="yearSelect"></select>
+    <button class="todaybtn" id="todayBtn">Today</button>
+  </div>
+
+  <div id="content"></div>
+
+  <footer class="notes" id="footerNotes"></footer>
+
+</div>
+
+<script>
+(function(){
+
+  // ---------- date helpers (all UTC to avoid timezone/DST drift) ----------
+  function startOfWeekUTC(date){
+    const day = date.getUTCDay();
+    const d = new Date(date.getTime());
+    d.setUTCDate(d.getUTCDate() - day);
+    return d;
+  }
+  function addDaysUTC(date, days){
+    const d = new Date(date.getTime());
+    d.setUTCDate(d.getUTCDate() + days);
+    return d;
+  }
+  function fmt(d){ return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric', timeZone:'UTC' }); }
+  function fmtShort(d){ return d.toLocaleDateString('en-US', { month:'short', day:'numeric', timeZone:'UTC' }); }
+  function dayName(d){ return d.toLocaleDateString('en-US', { weekday:'short', timeZone:'UTC' }); }
+
+  const MONTH_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const MONTH_ABBR = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  const now = new Date();
+  const todayUTC = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+
+  function findIdxForDate(dsObj, d){
+    const aw = dsObj.allWeeks;
+    for (let i=0;i<aw.length;i++){ if (d >= aw[i].start && d <= aw[i].end) return i; }
+    return d < aw[0].start ? 0 : aw.length - 1;
+  }
+
+  function buildGroups(allWeeks){
+    const yearGroups=[], quarterGroups=[], monthGroups=[];
+    let lastY=null, lastQ=null, lastM=null;
+    allWeeks.forEach((w, idx) => {
+      const qKey = w.yearKey+'-'+w.quarter, mKey = w.yearKey+'-'+w.month;
+      if (w.yearKey !== lastY){ yearGroups.push({ yearKey:w.yearKey, startIdx: idx }); lastY = w.yearKey; }
+      if (qKey !== lastQ){ quarterGroups.push({ yearKey:w.yearKey, quarter:w.quarter, startIdx: idx }); lastQ = qKey; }
+      if (mKey !== lastM){ monthGroups.push({ yearKey:w.yearKey, month:w.month, quarter:w.quarter, startIdx: idx }); lastM = mKey; }
+    });
+    return { yearGroups, quarterGroups, monthGroups };
+  }
+
+  // ================= FISCAL DATASET =================
+  function buildFiscalDataset(){
+    const YEAR_MIN = 2000, YEAR_MAX = 2042;
+    function fyStartDate(fy){ return startOfWeekUTC(new Date(Date.UTC(fy - 1, 9, 1))); }
+    const starts = {};
+    for (let fy = YEAR_MIN; fy <= YEAR_MAX + 1; fy++) starts[fy] = fyStartDate(fy);
+
+    const monthWeeksRegular = [5,4,4, 5,4,4, 5,4,4, 5,4,4];
+    const allWeeks = [];
+    const yearMeta = {};
+
+    for (let fy = YEAR_MIN; fy <= YEAR_MAX; fy++){
+      const s = starts[fy], sNext = starts[fy+1];
+      const totalDays = Math.round((sNext - s) / 86400000);
+      const totalWeeks = totalDays / 7;
+      const isLeap = totalWeeks === 53;
+      const monthWeeks = monthWeeksRegular.slice();
+      if (isLeap) monthWeeks[2] = 5;
+
+      let cursor = s, weekOfYear = 0;
+      const monthsMeta = [];
+      for (let m = 0; m < 12; m++){
+        const wCount = monthWeeks[m];
+        const quarter = Math.floor(m/3) + 1;
+        const monthOfQuarter = (m % 3) + 1;
+        const monthStart = cursor;
+        const weeksInMonth = [];
+        for (let w = 0; w < wCount; w++){
+          weekOfYear++;
+          const wStart = cursor, wEnd = addDaysUTC(cursor, 6);
+          const weekObj = {
+            yearKey: fy, quarter, month: m+1, monthOfQuarter,
+            weekOfMonth: w+1, weekOfMonthTotal: wCount,
+            weekOfYear, weekOfYearTotal: totalWeeks,
+            weekOfQuarter: null, weekOfQuarterTotal: null,
+            isExtraWeek: (isLeap && m === 2 && w === wCount - 1),
+            start: wStart, end: wEnd
+          };
+          weeksInMonth.push(weekObj);
+          allWeeks.push(weekObj);
+          cursor = addDaysUTC(cursor, 7);
+        }
+        const monthEnd = addDaysUTC(cursor, -1);
+        monthsMeta.push({ month:m+1, quarter, monthOfQuarter, start:monthStart, end:monthEnd, weeks:weeksInMonth, weekCount:wCount, name:'Month '+(m+1), abbr:'M'+(m+1) });
+      }
+      for (let q = 1; q <= 4; q++){
+        const qWeeks = allWeeks.filter(w => w.yearKey === fy && w.quarter === q);
+        qWeeks.forEach((w, i) => { w.weekOfQuarter = i+1; w.weekOfQuarterTotal = qWeeks.length; });
+      }
+      const quartersMeta = [1,2,3,4].map(q => {
+        const ms = monthsMeta.filter(mm => mm.quarter === q);
+        return { quarter:q, start: ms[0].start, end: ms[ms.length-1].end, weekCount: ms.reduce((a,mm)=>a+mm.weekCount,0), months: ms };
+      });
+      yearMeta[fy] = { yearKey: fy, start: s, end: addDaysUTC(sNext, -1), totalWeeks, totalDays, isLeap, months: monthsMeta, quarters: quartersMeta };
+    }
+
+    const groups = buildGroups(allWeeks);
+    const currentIndex = findIdxForDate({ allWeeks }, todayUTC);
+    return Object.assign({ YEAR_MIN, YEAR_MAX, allWeeks, yearMeta, currentIndex }, groups);
+  }
+
+  // ================= CALENDAR (GREGORIAN) DATASET =================
+  function buildCalendarDataset(){
+    const YEAR_MIN = 2000, YEAR_MAX = 2042;
+    function yearStart(y){ return startOfWeekUTC(new Date(Date.UTC(y, 0, 1))); }
+    const starts = {};
+    for (let y = YEAR_MIN; y <= YEAR_MAX + 1; y++) starts[y] = yearStart(y);
+
+    const allWeeks = [];
+    const yearMeta = {};
+
+    for (let y = YEAR_MIN; y <= YEAR_MAX; y++){
+      const s = starts[y], sNext = starts[y+1];
+      const totalWeeksContinuous = Math.round((sNext - s) / 604800000);
+      const isLeap = (y % 4 === 0 && (y % 100 !== 0 || y % 400 === 0));
+
+      // continuous weeks: for Week-view nav + weekOfYear numbering
+      let cursor = s;
+      const yearWeeksTemp = [];
+      for (let i = 0; i < totalWeeksContinuous; i++){
+        const wStart = cursor, wEnd = addDaysUTC(cursor, 6);
+        const m = wStart.getUTCMonth() + 1;
+        const q = Math.floor((m-1)/3) + 1;
+        const weekObj = {
+          yearKey: y, quarter: q, month: m, monthOfQuarter: ((m-1)%3)+1,
+          weekOfYear: i+1, weekOfYearTotal: totalWeeksContinuous,
+          weekOfMonth: null, weekOfMonthTotal: null,
+          weekOfQuarter: null, weekOfQuarterTotal: null,
+          isExtraWeek: false, start: wStart, end: wEnd
+        };
+        yearWeeksTemp.push(weekObj);
+        allWeeks.push(weekObj);
+        cursor = addDaysUTC(cursor, 7);
+      }
+      for (let mm=1; mm<=12; mm++){
+        const mw = yearWeeksTemp.filter(w => w.month===mm);
+        mw.forEach((w,i) => { w.weekOfMonth = i+1; w.weekOfMonthTotal = mw.length; });
+      }
+      for (let q=1; q<=4; q++){
+        const qw = yearWeeksTemp.filter(w => w.quarter===q);
+        qw.forEach((w,i) => { w.weekOfQuarter = i+1; w.weekOfQuarterTotal = qw.length; });
+      }
+
+      // display grids: real calendar months, with leading/trailing padding days
+      const monthsMeta = [];
+      for (let mm=1; mm<=12; mm++){
+        const monthStart = new Date(Date.UTC(y, mm-1, 1));
+        const monthEnd = new Date(Date.UTC(y, mm, 0));
+        const gridStart = startOfWeekUTC(monthStart);
+        const gridEndWeekStart = startOfWeekUTC(monthEnd);
+        const weeks = [];
+        let c = gridStart;
+        while (c.getTime() <= gridEndWeekStart.getTime()){
+          weeks.push({ start:c, end: addDaysUTC(c,6), isExtraWeek:false });
+          c = addDaysUTC(c, 7);
+        }
+        const quarter = Math.floor((mm-1)/3) + 1;
+        monthsMeta.push({
+          month: mm, quarter, monthOfQuarter: ((mm-1)%3)+1,
+          start: monthStart, end: monthEnd, weeks,
+          daysInMonth: monthEnd.getUTCDate(),
+          name: MONTH_FULL[mm-1], abbr: MONTH_ABBR[mm-1]
+        });
+      }
+      const quartersMeta = [1,2,3,4].map(q => {
+        const ms = monthsMeta.filter(mm2 => mm2.quarter === q);
+        return { quarter:q, start: ms[0].start, end: ms[ms.length-1].end, months: ms };
+      });
+      yearMeta[y] = {
+        yearKey: y, start: new Date(Date.UTC(y,0,1)), end: new Date(Date.UTC(y,11,31)),
+        totalWeeks: totalWeeksContinuous, totalDays: isLeap ? 366 : 365, isLeap,
+        months: monthsMeta, quarters: quartersMeta
+      };
+    }
+
+    const groups = buildGroups(allWeeks);
+    const currentIndex = findIdxForDate({ allWeeks }, todayUTC);
+    return Object.assign({ YEAR_MIN, YEAR_MAX, allWeeks, yearMeta, currentIndex }, groups);
+  }
+
+  const DS = { fiscal: buildFiscalDataset(), calendar: buildCalendarDataset() };
+
+  // ---------- state ----------
+  let mode = 'fiscal';
+  let view = 'year';
+  const pointer = { fiscal: DS.fiscal.currentIndex, calendar: DS.calendar.currentIndex };
+
+  function ds(){ return DS[mode]; }
+  function curW(){ return ds().allWeeks[pointer[mode]]; }
+  function isCurrentWeek(ww){
+    const cw = ds().allWeeks[ds().currentIndex];
+    return ww.start.getTime() === cw.start.getTime();
+  }
+
+  // ---------- nav ----------
+  function navYear(dir){
+    const d = ds(), w = curW();
+    const pos = d.yearGroups.findIndex(g => g.yearKey === w.yearKey);
+    const np = Math.min(Math.max(pos+dir,0), d.yearGroups.length-1);
+    pointer[mode] = d.yearGroups[np].startIdx;
+  }
+  function navQuarter(dir){
+    const d = ds(), w = curW();
+    const pos = d.quarterGroups.findIndex(g => g.yearKey===w.yearKey && g.quarter===w.quarter);
+    const np = Math.min(Math.max(pos+dir,0), d.quarterGroups.length-1);
+    pointer[mode] = d.quarterGroups[np].startIdx;
+  }
+  function navMonth(dir){
+    const d = ds(), w = curW();
+    const pos = d.monthGroups.findIndex(g => g.yearKey===w.yearKey && g.month===w.month);
+    const np = Math.min(Math.max(pos+dir,0), d.monthGroups.length-1);
+    pointer[mode] = d.monthGroups[np].startIdx;
+  }
+  function navWeek(dir){
+    const d = ds();
+    pointer[mode] = Math.min(Math.max(pointer[mode]+dir,0), d.allWeeks.length-1);
+  }
+
+  // ---------- DOM refs ----------
+  const contentEl = document.getElementById('content');
+  const periodLabel = document.getElementById('periodLabel');
+  const periodSub = document.getElementById('periodSub');
+  const yearSelect = document.getElementById('yearSelect');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const subtitleText = document.getElementById('subtitleText');
+  const footerNotes = document.getElementById('footerNotes');
+
+  const SUBTITLES = {
+    fiscal: 'FY2000 &ndash; FY2042 &middot; weeks run Sunday&ndash;Saturday &middot; 5&ndash;4&ndash;4-style quarters',
+    calendar: '2000 &ndash; 2042 &middot; standard Gregorian calendar &middot; weeks run Sunday&ndash;Saturday'
+  };
+  const FOOTNOTES = {
+    fiscal: '<div><b>Rules used:</b> a fiscal year begins on the Sunday of the week containing October&nbsp;1 of the prior calendar year, and ends 52 or 53 weeks later on a Saturday. Each quarter is normally 13 weeks in a 5&ndash;4&ndash;4 pattern (first fiscal month of the quarter has 5 weeks, the next two have 4). In a 53-week year, the extra week is inserted into the 3rd fiscal month (last month of Q1), making Q1 a 14-week quarter (5&ndash;4&ndash;5).</div>' +
+      '<div style="margin-top:6px"><b>Note:</b> leap-week placement is derived automatically from the October&nbsp;1 rule and matches Apple\'s reported fiscal quarter-end dates (verified against SEC filings for recent years). Years are generated FY2000&ndash;FY2042.</div>',
+    calendar: '<div>The standard Gregorian calendar &mdash; January&ndash;December months, Q1&ndash;Q4 by calendar quarter, Sunday&ndash;Saturday weeks. Shown for reference alongside the fiscal calendar. Days outside the selected month appear faded in the month and quarter grids.</div>'
+  };
+
+  function populateYearSelect(){
+    yearSelect.innerHTML = '';
+    const d = ds();
+    for (let y = d.YEAR_MIN; y <= d.YEAR_MAX; y++){
+      const opt = document.createElement('option');
+      opt.value = y;
+      if (mode === 'fiscal') opt.textContent = 'FY' + y + (d.yearMeta[y].isLeap ? ' (53wk)' : '');
+      else opt.textContent = y + (d.yearMeta[y].isLeap ? ' (leap)' : '');
+      yearSelect.appendChild(opt);
+    }
+  }
+
+  function dayCellHTML(date, faded){
+    const isToday = date.getTime() === todayUTC.getTime();
+    const isFirstOfCalMonth = date.getUTCDate() === 1;
+    const tag = isFirstOfCalMonth ? '<span class="monthtag">' + MONTH_ABBR[date.getUTCMonth()] + '</span>' : '';
+    return '<td class="daycell' + (isToday ? ' today' : '') + (faded ? ' outside' : '') + '">' + tag + '<span class="num">' + date.getUTCDate() + '</span></td>';
+  }
+
+  function monthGridHTML(monthMeta, mini, fadeMonthNum){
+    const dowFull = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const dowMini = ['S','M','T','W','T','F','S'];
+    let html = '<table class="calgrid' + (mini ? ' mini' : '') + '"><thead><tr>' +
+      (mini ? dowMini : dowFull).map(dd => '<th>' + dd + '</th>').join('') +
+      '</tr></thead><tbody>';
+    monthMeta.weeks.forEach(ww => {
+      const cur = isCurrentWeek(ww);
+      html += '<tr class="calrow' + (ww.isExtraWeek ? ' extra-row' : '') + (cur ? ' current-row' : '') + '" data-start="' + ww.start.toISOString() + '">';
+      for (let i=0;i<7;i++){
+        const dte = addDaysUTC(ww.start, i);
+        const faded = fadeMonthNum ? (dte.getUTCMonth()+1 !== fadeMonthNum) : false;
+        html += dayCellHTML(dte, faded);
+      }
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    return html;
+  }
+
+  function attachCalRowClicks(){
+    contentEl.querySelectorAll('tr.calrow[data-start]').forEach(el => {
+      el.addEventListener('click', () => {
+        const dt = new Date(el.getAttribute('data-start'));
+        pointer[mode] = findIdxForDate(ds(), dt);
+        view = 'week';
+        setActiveButtons();
+        render();
+      });
+    });
+  }
+
+  function renderYear(w){
+    const d = ds(), meta = d.yearMeta[w.yearKey];
+    const isCurY = w.yearKey === ds().allWeeks[d.currentIndex].yearKey;
+    const label = mode === 'fiscal' ? ('Fiscal Year ' + w.yearKey) : String(w.yearKey);
+    const leapText = mode === 'fiscal' ? '53-week year' : 'Leap year (366 days)';
+    periodLabel.innerHTML = label + (meta.isLeap ? '<span class="badge leap">' + leapText + '</span>' : '') + (isCurY ? '<span class="badge today">Current</span>' : '');
+    periodSub.textContent = fmt(meta.start) + ' \u2013 ' + fmt(meta.end);
+
+    const summaryText = mode === 'fiscal'
+      ? '<b>' + meta.totalWeeks + ' weeks</b> total &middot; start <b>' + fmt(meta.start) + '</b> &middot; end <b>' + fmt(meta.end) + '</b>'
+      : '<b>' + meta.totalDays + ' days</b> total &middot; start <b>' + fmt(meta.start) + '</b> &middot; end <b>' + fmt(meta.end) + '</b>';
+
+    let html = '<div class="card year-summary">' + summaryText + '</div><div class="qgrid">';
+    meta.quarters.forEach(q => {
+      const isCurQ = isCurY && q.quarter === ds().allWeeks[d.currentIndex].quarter;
+      const qname = mode === 'fiscal'
+        ? 'Q' + q.quarter + ' &middot; ' + q.weekCount + ' wks'
+        : 'Q' + q.quarter + ' (' + q.months[0].abbr + '\u2013' + q.months[2].abbr + ')';
+      html += '<div class="card qcard' + (isCurQ ? ' current' : '') + '">' +
+        '<div class="qcard-head"><span class="qname">' + qname + '</span>' +
+        '<span class="qrange">' + fmtShort(q.start) + ' \u2013 ' + fmtShort(q.end) + '</span></div>';
+      q.months.forEach(m => {
+        const isCurM = isCurQ && m.month === ds().allWeeks[d.currentIndex].month;
+        html += '<div class="minigrid-wrap">' +
+          '<div class="minigrid-head"><span class="' + (isCurM?'cur':'') + '">' + m.name + '</span><span>' + fmtShort(m.start) + '\u2013' + fmtShort(m.end) + '</span></div>' +
+          monthGridHTML(m, true, mode === 'calendar' ? m.month : null) +
+          '</div>';
+      });
+      html += '</div>';
+    });
+    html += '</div>';
+    contentEl.innerHTML = html;
+    attachCalRowClicks();
+  }
+
+  function renderQuarter(w){
+    const d = ds(), meta = d.yearMeta[w.yearKey];
+    const q = meta.quarters[w.quarter-1];
+    const isCurQ = w.yearKey === ds().allWeeks[d.currentIndex].yearKey && w.quarter === ds().allWeeks[d.currentIndex].quarter;
+    const label = (mode === 'fiscal' ? 'FY' + w.yearKey : w.yearKey) + ' &middot; Q' + w.quarter;
+    periodLabel.innerHTML = label + (isCurQ ? '<span class="badge today">Current</span>' : '');
+    periodSub.textContent = fmt(q.start) + ' \u2013 ' + fmt(q.end) + (mode === 'fiscal' ? ' (' + q.weekCount + ' weeks)' : ' (' + q.months[0].abbr + '\u2013' + q.months[2].abbr + ')');
+
+    let html = '';
+    q.months.forEach(m => {
+      const mtitle = mode === 'fiscal' ? 'Month ' + m.month : m.name;
+      const msub = mode === 'fiscal' ? '(month ' + m.monthOfQuarter + ' of quarter, ' + m.weekCount + ' wks)' : '(' + m.daysInMonth + ' days)';
+      html += '<div class="card monthcard"><div class="monthcard-head">' +
+        '<span class="mtitle">' + mtitle + ' <span class="msub">' + msub + '</span></span>' +
+        '<span class="mrange">' + fmt(m.start) + ' \u2013 ' + fmt(m.end) + '</span></div>' +
+        monthGridHTML(m, false, mode === 'calendar' ? m.month : null) +
+        '</div>';
+    });
+    contentEl.innerHTML = html;
+    attachCalRowClicks();
+  }
+
+  function renderMonth(w){
+    const d = ds(), meta = d.yearMeta[w.yearKey];
+    const m = meta.months[w.month-1];
+    const isCurM = w.yearKey === ds().allWeeks[d.currentIndex].yearKey && w.month === ds().allWeeks[d.currentIndex].month;
+    const label = (mode === 'fiscal' ? 'FY' + w.yearKey + ' &middot; Q' + w.quarter + ' &middot; Month ' + w.month : m.name + ' ' + w.yearKey);
+    periodLabel.innerHTML = label + (isCurM ? '<span class="badge today">Current</span>' : '');
+    periodSub.textContent = mode === 'fiscal'
+      ? fmt(m.start) + ' \u2013 ' + fmt(m.end) + ' (' + m.weekCount + ' weeks, month ' + m.monthOfQuarter + ' of quarter)'
+      : fmt(m.start) + ' \u2013 ' + fmt(m.end) + ' &middot; Q' + m.quarter + ' &middot; ' + m.daysInMonth + ' days';
+
+    let html = '<div class="card monthcard">' + monthGridHTML(m, false, mode === 'calendar' ? m.month : null);
+
+    if (mode === 'fiscal'){
+      html += '<table class="weektable"><thead><tr>' +
+        '<th>Week (FY)</th><th>Week (month)</th><th>Week (quarter)</th><th>Range</th></tr></thead><tbody>';
+      m.weeks.forEach(ww => {
+        const cur = isCurrentWeek(ww);
+        html += '<tr class="' + (cur?'current':'') + '" data-start="' + ww.start.toISOString() + '">' +
+          '<td>Wk ' + ww.weekOfYear + ' of ' + ww.weekOfYearTotal + '</td>' +
+          '<td>Wk ' + ww.weekOfMonth + ' of ' + ww.weekOfMonthTotal + (ww.isExtraWeek?' (extra)':'') + '</td>' +
+          '<td>Wk ' + ww.weekOfQuarter + ' of ' + ww.weekOfQuarterTotal + '</td>' +
+          '<td class="range">' + fmt(ww.start) + ' \u2013 ' + fmt(ww.end) + '</td>' +
+          '</tr>';
+      });
+      html += '</tbody></table>';
+    } else {
+      html += '<div class="infoline">' + m.name + ' ' + w.yearKey + ' has <b>' + m.daysInMonth + ' days</b>, starting on a <b>' + dayName(m.start) + '</b>.</div>';
+    }
+    html += '</div>';
+    contentEl.innerHTML = html;
+
+    attachCalRowClicks();
+    contentEl.querySelectorAll('tr[data-start]:not(.calrow)').forEach(el => {
+      el.addEventListener('click', () => {
+        const dt = new Date(el.getAttribute('data-start'));
+        pointer[mode] = findIdxForDate(ds(), dt);
+        view = 'week';
+        setActiveButtons();
+        render();
+      });
+    });
+  }
+
+  function renderWeek(w){
+    const isCur = isCurrentWeek(w);
+    const label = (mode === 'fiscal' ? 'FY' + w.yearKey : w.yearKey) + ' &middot; Week ' + w.weekOfYear + ' of ' + w.weekOfYearTotal;
+    periodLabel.innerHTML = label + (isCur ? '<span class="badge today">Current</span>' : '') + (w.isExtraWeek ? '<span class="badge leap">Extra week</span>' : '');
+    const monthName = mode === 'fiscal' ? 'Month ' + w.month : MONTH_FULL[w.month-1];
+    periodSub.textContent = 'Q' + w.quarter + ' \u00b7 ' + monthName;
+
+    let html = '<div class="card weekcard">' +
+      '<div class="range">' + fmt(w.start) + ' \u2013 ' + fmt(w.end) + '</div>' +
+      '<div class="breadcrumb">' + (mode==='fiscal'?'FY':'') + w.yearKey + ' &middot; Quarter ' + w.quarter + ' &middot; ' + monthName + ' (week ' + w.weekOfMonth + ' of ' + w.weekOfMonthTotal + ' in month) &middot; week ' + w.weekOfQuarter + ' of ' + w.weekOfQuarterTotal + ' in quarter</div>' +
+      '<div class="daystrip">';
+    for (let i=0;i<7;i++){
+      const dte = addDaysUTC(w.start, i);
+      const isToday = dte.getTime() === todayUTC.getTime();
+      html += '<div class="day' + (isToday?' today':'') + '">' +
+        '<div class="dname">' + dayName(dte) + '</div>' +
+        '<div class="dnum">' + fmtShort(dte) + '</div></div>';
+    }
+    html += '</div></div>';
+    contentEl.innerHTML = html;
+  }
+
+  function render(){
+    subtitleText.innerHTML = SUBTITLES[mode];
+    footerNotes.innerHTML = FOOTNOTES[mode];
+
+    const w = curW();
+    yearSelect.value = w.yearKey;
+    if (view === 'year') renderYear(w);
+    else if (view === 'quarter') renderQuarter(w);
+    else if (view === 'month') renderMonth(w);
+    else renderWeek(w);
+
+    const d = ds(), w2 = curW();
+    if (view==='year'){
+      prevBtn.disabled = w2.yearKey === d.YEAR_MIN;
+      nextBtn.disabled = w2.yearKey === d.YEAR_MAX;
+    } else if (view==='quarter'){
+      const pos = d.quarterGroups.findIndex(g=>g.yearKey===w2.yearKey&&g.quarter===w2.quarter);
+      prevBtn.disabled = pos===0; nextBtn.disabled = pos===d.quarterGroups.length-1;
+    } else if (view==='month'){
+      const pos = d.monthGroups.findIndex(g=>g.yearKey===w2.yearKey&&g.month===w2.month);
+      prevBtn.disabled = pos===0; nextBtn.disabled = pos===d.monthGroups.length-1;
+    } else {
+      prevBtn.disabled = pointer[mode]===0; nextBtn.disabled = pointer[mode]===d.allWeeks.length-1;
+    }
+  }
+
+  function setActiveButtons(){
+    document.querySelectorAll('#tabs button').forEach(t => t.classList.toggle('active', t.getAttribute('data-view')===view));
+    document.querySelectorAll('#modeSwitch button').forEach(t => t.classList.toggle('active', t.getAttribute('data-mode')===mode));
+  }
+
+  document.querySelectorAll('#tabs button').forEach(t => {
+    t.addEventListener('click', () => { view = t.getAttribute('data-view'); setActiveButtons(); render(); });
+  });
+  document.querySelectorAll('#modeSwitch button').forEach(t => {
+    t.addEventListener('click', () => {
+      mode = t.getAttribute('data-mode');
+      populateYearSelect();
+      setActiveButtons();
+      render();
+    });
+  });
+
+  prevBtn.addEventListener('click', () => {
+    if (view==='year') navYear(-1);
+    else if (view==='quarter') navQuarter(-1);
+    else if (view==='month') navMonth(-1);
+    else navWeek(-1);
+    render();
+  });
+  nextBtn.addEventListener('click', () => {
+    if (view==='year') navYear(1);
+    else if (view==='quarter') navQuarter(1);
+    else if (view==='month') navMonth(1);
+    else navWeek(1);
+    render();
+  });
+
+  yearSelect.addEventListener('change', () => {
+    const y = parseInt(yearSelect.value, 10);
+    const g = ds().yearGroups.find(g => g.yearKey === y);
+    pointer[mode] = g.startIdx;
+    render();
+  });
+
+  document.getElementById('todayBtn').addEventListener('click', () => {
+    pointer[mode] = ds().currentIndex;
+    render();
+  });
+
+  populateYearSelect();
+  setActiveButtons();
+  render();
+})();
+</script>
+</body>
+</html>
