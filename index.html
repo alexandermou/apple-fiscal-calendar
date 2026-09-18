@@ -258,6 +258,10 @@
     padding: 14px 18px;
   }
   .year-summary b{ color: var(--ink); font-weight: 600; }
+  .year-summary .leap-count{
+    color:var(--leap);
+    font-weight:700;
+  }
   @media (max-width: 560px){
     .year-summary{ align-items:flex-start; }
     .year-summary .holiday-legend{ margin-top:2px; }
@@ -280,6 +284,7 @@
     border-bottom: 1px solid var(--border-soft);
   }
   .qcard-head .qname{ font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
+  .extra-weeks{ color:var(--leap); font-weight:700; }
   .qcard-head .qrange{ font-size: 12px; color: var(--ink-dim); }
 
   .minigrid-wrap{ margin-top: 10px; }
@@ -320,7 +325,11 @@
   }
   table.calgrid tr.calrow{ cursor: pointer; }
   table.calgrid tr.calrow.current-row td.daycell{ background: var(--accent-soft); }
-  table.calgrid tr.calrow.extra-row td.daycell{ box-shadow: inset 0 0 0 1.5px var(--leap); }
+  table.calgrid tr.calrow.extra-row{
+    outline: 1.5px solid var(--leap);
+    outline-offset: -1px;
+    border-radius: 7px;
+  }
   table.calgrid tr.calrow:hover td.daycell{ background: #eef0f3; }
   table.calgrid tr.calrow.current-row:hover td.daycell{ background: #d9ecfd; }
 
@@ -401,6 +410,11 @@
   .weekcard .range{ font-size: 24px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 4px; }
   .weekcard .breadcrumb{ font-size: 12.5px; color: var(--ink-dim); margin-bottom: 20px; }
   .daystrip{ display:grid; grid-template-columns: repeat(7,1fr); gap: 8px; }
+  .daystrip.extra-week{
+    outline: 2px solid var(--leap);
+    outline-offset: 4px;
+    border-radius: var(--radius-md);
+  }
   .day{ background: var(--bg); border-radius: var(--radius-md); padding: 14px 6px; text-align:center; }
   .day.today{ background: var(--today); }
   .day .dname{
@@ -438,7 +452,7 @@
 <div class="wrap">
 
   <header class="top">
-    <h1>Apple Fiscal Calendar</h1>
+    <h1 id="pageTitle">Apple Fiscal Calendar</h1>
     <div class="subtitle" id="subtitleText"></div>
 
     <div class="top-actions">
@@ -747,10 +761,11 @@
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
   const subtitleText = document.getElementById('subtitleText');
+  const pageTitle = document.getElementById('pageTitle');
 
   const SUBTITLES = {
-    fiscal: 'FY2000 &ndash; FY2042 &middot; weeks run Sunday&ndash;Saturday &middot; 5&ndash;4&ndash;4-style quarters',
-    calendar: '2000 &ndash; 2042 &middot; standard Gregorian calendar &middot; weeks run Sunday&ndash;Saturday'
+    fiscal: '5&ndash;4&ndash;4-style quarters',
+    calendar: 'Standard Gregorian calendar'
   };
 
   function populateYearSelect(){
@@ -810,12 +825,11 @@
     const d = ds(), meta = d.yearMeta[w.yearKey];
     const isCurY = w.yearKey === ds().allWeeks[d.currentIndex].yearKey;
     const label = mode === 'fiscal' ? ('Fiscal Year ' + w.yearKey) : String(w.yearKey);
-    const leapText = mode === 'fiscal' ? '53-week year' : 'Leap year (366 days)';
-    periodLabel.innerHTML = label + (meta.isLeap ? '<span class="badge leap">' + leapText + '</span>' : '') + (isCurY ? '<span class="badge today">Current</span>' : '');
+    periodLabel.innerHTML = label + (isCurY ? '<span class="badge today">Current</span>' : '');
     periodSub.textContent = fmt(meta.start) + ' \u2013 ' + fmt(meta.end);
 
     const summaryText = mode === 'fiscal'
-      ? '<b>' + meta.totalWeeks + ' weeks</b> total &middot; start <b>' + fmt(meta.start) + '</b> &middot; end <b>' + fmt(meta.end) + '</b>'
+      ? (meta.isLeap ? '<span class="leap-count">53</span> weeks' : '<b>' + meta.totalWeeks + ' weeks</b>') + ' total &middot; start <b>' + fmt(meta.start) + '</b> &middot; end <b>' + fmt(meta.end) + '</b>'
       : '<b>' + meta.totalDays + ' days</b> total &middot; start <b>' + fmt(meta.start) + '</b> &middot; end <b>' + fmt(meta.end) + '</b>';
 
     let html = '<div class="card year-summary"><span>' + summaryText + '</span>' +
@@ -824,7 +838,7 @@
     meta.quarters.forEach(q => {
       const isCurQ = isCurY && q.quarter === ds().allWeeks[d.currentIndex].quarter;
       const qname = mode === 'fiscal'
-        ? 'Q' + q.quarter + ' &middot; ' + q.weekCount + ' wks'
+        ? 'Q' + q.quarter + ' &middot; ' + (q.weekCount === 14 ? '<span class="extra-weeks">14</span> wks' : q.weekCount + ' wks')
         : 'Q' + q.quarter + ' (' + q.months[0].abbr + '\u2013' + q.months[2].abbr + ')';
       html += '<div class="card qcard' + (isCurQ ? ' current' : '') + '">' +
         '<div class="qcard-head"><span class="qname">' + qname + '</span>' +
@@ -849,12 +863,14 @@
     const isCurQ = w.yearKey === ds().allWeeks[d.currentIndex].yearKey && w.quarter === ds().allWeeks[d.currentIndex].quarter;
     const label = (mode === 'fiscal' ? 'FY' + w.yearKey : w.yearKey) + ' &middot; Q' + w.quarter;
     periodLabel.innerHTML = label + (isCurQ ? '<span class="badge today">Current</span>' : '');
-    periodSub.textContent = fmt(q.start) + ' \u2013 ' + fmt(q.end) + (mode === 'fiscal' ? ' (' + q.weekCount + ' weeks)' : ' (' + q.months[0].abbr + '\u2013' + q.months[2].abbr + ')');
+    periodSub.innerHTML = fmt(q.start) + ' \u2013 ' + fmt(q.end) + (mode === 'fiscal'
+      ? ' (' + (q.weekCount === 14 ? '<span class="extra-weeks">14</span>' : q.weekCount) + ' weeks)'
+      : ' (' + q.months[0].abbr + '\u2013' + q.months[2].abbr + ')');
 
     let html = '';
     q.months.forEach(m => {
       const mtitle = mode === 'fiscal' ? 'Month ' + m.month : m.name;
-      const msub = mode === 'fiscal' ? '(month ' + m.monthOfQuarter + ' of quarter, ' + m.weekCount + ' wks)' : '(' + m.daysInMonth + ' days)';
+      const msub = mode === 'fiscal' ? '(' + m.weekCount + ' wks)' : '(' + m.daysInMonth + ' days)';
       html += '<div class="card monthcard"><div class="monthcard-head">' +
         '<span class="mtitle">' + mtitle + ' <span class="msub">' + msub + '</span></span>' +
         '<span class="mrange">' + fmt(m.start) + ' \u2013 ' + fmt(m.end) + '</span></div>' +
@@ -871,8 +887,9 @@
     const isCurM = w.yearKey === ds().allWeeks[d.currentIndex].yearKey && w.month === ds().allWeeks[d.currentIndex].month;
     const label = (mode === 'fiscal' ? 'FY' + w.yearKey + ' &middot; Q' + w.quarter + ' &middot; Month ' + w.month : m.name + ' ' + w.yearKey);
     periodLabel.innerHTML = label + (isCurM ? '<span class="badge today">Current</span>' : '');
-    periodSub.textContent = mode === 'fiscal'
-      ? fmt(m.start) + ' \u2013 ' + fmt(m.end) + ' (' + m.weekCount + ' weeks, month ' + m.monthOfQuarter + ' of quarter)'
+    periodSub.innerHTML = mode === 'fiscal'
+      ? fmt(m.start) + ' \u2013 ' + fmt(m.end) + ' (' +
+        (m.weekCount === 5 && m.monthOfQuarter === 3 ? '<span class="extra-weeks">5</span>' : m.weekCount) + ' weeks)'
       : fmt(m.start) + ' \u2013 ' + fmt(m.end) + ' &middot; Q' + m.quarter + ' &middot; ' + m.daysInMonth + ' days';
 
     let html = '<div class="card monthcard">' + monthGridHTML(m, false, mode === 'calendar' ? m.month : null);
@@ -910,15 +927,18 @@
 
   function renderWeek(w){
     const isCur = isCurrentWeek(w);
-    const label = (mode === 'fiscal' ? 'FY' + w.yearKey : w.yearKey) + ' &middot; Week ' + w.weekOfYear + ' of ' + w.weekOfYearTotal;
-    periodLabel.innerHTML = label + (isCur ? '<span class="badge today">Current</span>' : '') + (w.isExtraWeek ? '<span class="badge leap">Extra week</span>' : '');
+    const isLeapFiscalYear = mode === 'fiscal' && ds().yearMeta[w.yearKey].isLeap;
+    const weekNumber = isLeapFiscalYear && w.weekOfYear === 14 ? '<span class="extra-weeks">14</span>' : w.weekOfYear;
+    const weekTotal = isLeapFiscalYear ? '<span class="extra-weeks">53</span>' : w.weekOfYearTotal;
+    const label = (mode === 'fiscal' ? 'FY' + w.yearKey : w.yearKey) + ' &middot; Week ' + weekNumber + ' of ' + weekTotal;
+    periodLabel.innerHTML = label + (isCur ? '<span class="badge today">Current</span>' : '');
     const monthName = mode === 'fiscal' ? 'Month ' + w.month : MONTH_FULL[w.month-1];
     periodSub.textContent = 'Q' + w.quarter + ' \u00b7 ' + monthName;
 
     let html = '<div class="card weekcard">' +
       '<div class="range">' + fmt(w.start) + ' \u2013 ' + fmt(w.end) + '</div>' +
       '<div class="breadcrumb">' + (mode==='fiscal'?'FY':'') + w.yearKey + ' &middot; Quarter ' + w.quarter + ' &middot; ' + monthName + ' (week ' + w.weekOfMonth + ' of ' + w.weekOfMonthTotal + ' in month) &middot; week ' + w.weekOfQuarter + ' of ' + w.weekOfQuarterTotal + ' in quarter</div>' +
-      '<div class="daystrip">';
+      '<div class="daystrip' + (w.isExtraWeek ? ' extra-week' : '') + '">';
     for (let i=0;i<7;i++){
       const dte = addDaysUTC(w.start, i);
       const isToday = dte.getTime() === todayUTC.getTime();
@@ -934,6 +954,7 @@
   }
 
   function render(){
+    pageTitle.textContent = mode === 'fiscal' ? 'Apple Fiscal Calendar' : 'Calendar';
     subtitleText.innerHTML = SUBTITLES[mode];
 
     const w = curW();
