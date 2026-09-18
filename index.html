@@ -357,15 +357,21 @@
   .day .dnum{ font-size: 16px; font-weight: 700; color: var(--ink); }
   .day.today .dnum{ color: #fff; }
 
-  footer.notes{
-    margin-top: 36px;
-    padding-top: 18px;
+  footer.author{
+    margin-top: 32px;
+    padding: 18px 0 8px;
     border-top: 1px solid var(--border);
-    font-size: 12px;
-    line-height: 1.7;
     color: var(--ink-faint);
+    font-size: 12px;
+    text-align: center;
   }
-  footer.notes b{ color: var(--ink-dim); }
+  footer.author a{
+    color: var(--ink-dim);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  footer.author a:hover{ text-decoration: underline; }
+
 </style>
 </head>
 <body>
@@ -403,7 +409,9 @@
 
   <div id="content"></div>
 
-  <footer class="notes" id="footerNotes"></footer>
+  <footer class="author">
+    Authored by <a href="https://www.linkedin.com/in/alexmou/" target="_blank" rel="noopener noreferrer">Alex Mou</a>
+  </footer>
 
 </div>
 
@@ -636,16 +644,10 @@
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
   const subtitleText = document.getElementById('subtitleText');
-  const footerNotes = document.getElementById('footerNotes');
 
   const SUBTITLES = {
     fiscal: 'FY2000 &ndash; FY2042 &middot; weeks run Sunday&ndash;Saturday &middot; 5&ndash;4&ndash;4-style quarters',
     calendar: '2000 &ndash; 2042 &middot; standard Gregorian calendar &middot; weeks run Sunday&ndash;Saturday'
-  };
-  const FOOTNOTES = {
-    fiscal: '<div><b>Rules used:</b> a fiscal year begins on the Sunday of the week containing October&nbsp;1 of the prior calendar year, and ends 52 or 53 weeks later on a Saturday. Each quarter is normally 13 weeks in a 5&ndash;4&ndash;4 pattern (first fiscal month of the quarter has 5 weeks, the next two have 4). In a 53-week year, the extra week is inserted into the 3rd fiscal month (last month of Q1), making Q1 a 14-week quarter (5&ndash;4&ndash;5).</div>' +
-      '<div style="margin-top:6px"><b>Note:</b> leap-week placement is derived automatically from the October&nbsp;1 rule and matches Apple\'s reported fiscal quarter-end dates (verified against SEC filings for recent years). Years are generated FY2000&ndash;FY2042.</div>',
-    calendar: '<div>The standard Gregorian calendar &mdash; January&ndash;December months, Q1&ndash;Q4 by calendar quarter, Sunday&ndash;Saturday weeks. Shown for reference alongside the fiscal calendar. Days outside the selected month appear faded in the month and quarter grids.</div>'
   };
 
   function populateYearSelect(){
@@ -823,7 +825,6 @@
 
   function render(){
     subtitleText.innerHTML = SUBTITLES[mode];
-    footerNotes.innerHTML = FOOTNOTES[mode];
 
     const w = curW();
     yearSelect.value = w.yearKey;
