@@ -22,6 +22,10 @@
     --accent: #0071e3;
     --accent-soft: #e8f2fe;
     --today: #ff3b30;
+    --holiday: #248a3d;
+    --holiday-soft: #eaf7ed;
+    --shutdown: var(--holiday);
+    --shutdown-soft: var(--holiday-soft);
     --leap: #ff9500;
     --leap-soft: #fff2e2;
     --radius-lg: 18px;
@@ -198,6 +202,18 @@
   }
   .todaybtn:hover{ background: var(--bg); }
 
+  .holiday-legend{
+    display:flex;
+    justify-content:flex-end;
+    gap:14px;
+    margin:-12px 2px 14px;
+    color:var(--ink-dim);
+    font-size:11px;
+  }
+  .holiday-legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .holiday-legend i{ width:9px; height:9px; border-radius:50%; display:inline-block; }
+  .holiday-legend .holiday-key{ background:var(--holiday); }
+
   .card{
     background: var(--surface);
     border: 1px solid var(--border);
@@ -302,6 +318,11 @@
     border-radius: 50%;
   }
   td.daycell.today .num{ background: var(--today); color: #fff; font-weight: 700; }
+  td.daycell.holiday{ background: var(--holiday-soft); color: var(--holiday); font-weight: 700; }
+  td.daycell.shutdown{ background: var(--shutdown-soft); color: var(--shutdown); font-weight: 700; }
+  td.daycell.holiday .num{ box-shadow: inset 0 -2px 0 var(--holiday); }
+  td.daycell.shutdown .num{ box-shadow: inset 0 -2px 0 var(--shutdown); }
+  td.daycell.today .num{ box-shadow:none; }
 
   table.calgrid.mini{ border-spacing: 1.5px; }
   table.calgrid.mini th{ font-size: 8px; padding: 0 0 3px; }
@@ -356,6 +377,12 @@
   .day.today .dname{ color: rgba(255,255,255,.75); }
   .day .dnum{ font-size: 16px; font-weight: 700; color: var(--ink); }
   .day.today .dnum{ color: #fff; }
+  .day.holiday{ background: var(--holiday-soft); box-shadow: inset 0 0 0 1px #b9dfc2; }
+  .day.shutdown{ background: var(--shutdown-soft); box-shadow: inset 0 0 0 1px #b9dfc2; }
+  .day.holiday .dname, .day.holiday .dnum{ color: var(--holiday); }
+  .day.shutdown .dname, .day.shutdown .dnum{ color: var(--shutdown); }
+  .day.today .dname, .day.today .dnum{ color:#fff; }
+  .day .holiday-name{ margin-top:8px; font-size:10px; line-height:1.25; font-weight:600; }
 
   footer.author{
     margin-top: 32px;
@@ -407,6 +434,10 @@
     <button class="todaybtn" id="todayBtn">Today</button>
   </div>
 
+  <div class="holiday-legend" aria-label="Calendar highlight legend">
+    <span><i class="holiday-key"></i>Holiday / Shutdown</span>
+  </div>
+
   <div id="content"></div>
 
   <footer class="author">
@@ -433,6 +464,46 @@
   function fmt(d){ return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric', timeZone:'UTC' }); }
   function fmtShort(d){ return d.toLocaleDateString('en-US', { month:'short', day:'numeric', timeZone:'UTC' }); }
   function dayName(d){ return d.toLocaleDateString('en-US', { weekday:'short', timeZone:'UTC' }); }
+
+  function sameUTCDate(a, b){
+    return a.getUTCFullYear()===b.getUTCFullYear() && a.getUTCMonth()===b.getUTCMonth() && a.getUTCDate()===b.getUTCDate();
+  }
+  function nthWeekdayUTC(year, month, weekday, nth){
+    const first = new Date(Date.UTC(year, month, 1));
+    return new Date(Date.UTC(year, month, 1 + ((7 + weekday - first.getUTCDay()) % 7) + 7*(nth-1)));
+  }
+  function lastWeekdayUTC(year, month, weekday){
+    const last = new Date(Date.UTC(year, month+1, 0));
+    return new Date(Date.UTC(year, month, last.getUTCDate() - ((7 + last.getUTCDay() - weekday) % 7)));
+  }
+  function observedFixedHoliday(date, month, day, name, minYear){
+    const year = date.getUTCFullYear();
+    if (minYear && year < minYear) return null;
+    const actual = new Date(Date.UTC(year, month, day));
+    if (sameUTCDate(date, actual)) return { name, type:'holiday' };
+    if (actual.getUTCDay()===6 && sameUTCDate(date, addDaysUTC(actual,-1))) return { name:name+' Holiday', type:'holiday' };
+    if (actual.getUTCDay()===0 && sameUTCDate(date, addDaysUTC(actual,1))) return { name:name+' Holiday', type:'holiday' };
+    return null;
+  }
+  function holidayInfo(date){
+    const y=date.getUTCFullYear(), m=date.getUTCMonth(), d=date.getUTCDate(), dow=date.getUTCDay();
+    if (m===11 && d===24) return {name:'Christmas Eve',type:'holiday'};
+    if (m===11 && d===25) return {name:'Christmas',type:'holiday'};
+    if (m===11 && d>=26 && d<=31 && dow!==0 && dow!==6) return {name:'Christmas Shutdown',type:'shutdown'};
+    if (m===0 && d===1) return {name:"New Year's Day",type:'holiday'};
+    if (m===0 && (d===2 || d===3) && dow===1) return {name:"New Year's Shutdown",type:'shutdown'};
+    const juneteenth=observedFixedHoliday(date,5,19,'Juneteenth',2021);
+    if (juneteenth) return juneteenth;
+    const independence=observedFixedHoliday(date,6,4,'Independence Day');
+    if (independence) return independence;
+    if (sameUTCDate(date,nthWeekdayUTC(y,0,1,3))) return {name:'Martin Luther King Day',type:'holiday'};
+    if (sameUTCDate(date,lastWeekdayUTC(y,4,1))) return {name:'Memorial Day',type:'holiday'};
+    if (sameUTCDate(date,nthWeekdayUTC(y,8,1,1))) return {name:'Labor Day',type:'holiday'};
+    const thanksgiving=nthWeekdayUTC(y,10,4,4);
+    if (sameUTCDate(date,thanksgiving)) return {name:'Thanksgiving Day',type:'holiday'};
+    if (sameUTCDate(date,addDaysUTC(thanksgiving,1))) return {name:'Thanksgiving Shutdown',type:'shutdown'};
+    return null;
+  }
 
   const MONTH_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   const MONTH_ABBR = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -664,9 +735,11 @@
 
   function dayCellHTML(date, faded){
     const isToday = date.getTime() === todayUTC.getTime();
+    const holiday = holidayInfo(date);
+    const tooltip = isToday ? ('Today' + (holiday ? ' — ' + holiday.name : '')) : (holiday ? holiday.name : '');
     const isFirstOfCalMonth = date.getUTCDate() === 1;
     const tag = isFirstOfCalMonth ? '<span class="monthtag">' + MONTH_ABBR[date.getUTCMonth()] + '</span>' : '';
-    return '<td class="daycell' + (isToday ? ' today' : '') + (faded ? ' outside' : '') + '">' + tag + '<span class="num">' + date.getUTCDate() + '</span></td>';
+    return '<td class="daycell' + (isToday ? ' today' : '') + (holiday ? ' '+holiday.type : '') + (faded ? ' outside' : '') + '"' + (tooltip ? ' title="'+tooltip+'" aria-label="'+tooltip+'"' : '') + '>' + tag + '<span class="num">' + date.getUTCDate() + '</span></td>';
   }
 
   function monthGridHTML(monthMeta, mini, fadeMonthNum){
@@ -815,9 +888,12 @@
     for (let i=0;i<7;i++){
       const dte = addDaysUTC(w.start, i);
       const isToday = dte.getTime() === todayUTC.getTime();
-      html += '<div class="day' + (isToday?' today':'') + '">' +
+      const holiday = holidayInfo(dte);
+      const tooltip = isToday ? ('Today' + (holiday ? ' — ' + holiday.name : '')) : (holiday ? holiday.name : '');
+      html += '<div class="day' + (isToday?' today':'') + (holiday?' '+holiday.type:'') + '"' + (tooltip?' title="'+tooltip+'" aria-label="'+tooltip+'"':'') + '>' +
         '<div class="dname">' + dayName(dte) + '</div>' +
-        '<div class="dnum">' + fmtShort(dte) + '</div></div>';
+        '<div class="dnum">' + fmtShort(dte) + '</div>' +
+        (holiday?'<div class="holiday-name">'+holiday.name+'</div>':'') + '</div>';
     }
     html += '</div></div>';
     contentEl.innerHTML = html;
