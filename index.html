@@ -63,15 +63,22 @@
   .wrap{
     max-width: 1080px;
     margin: 0 auto;
-    padding: 32px 22px 70px;
+    padding: 18px 22px 70px;
   }
 
   header.top{
-    margin-bottom: 22px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    column-gap: 22px;
+    align-items: center;
+    margin-bottom: 10px;
   }
 
   h1{
-    font-size: 26px;
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 23px;
     font-weight: 700;
     margin: 0 0 4px;
     letter-spacing: -0.02em;
@@ -79,18 +86,29 @@
   }
 
   .subtitle{
+    grid-column: 1;
+    grid-row: 2;
     color: var(--ink-dim);
-    font-size: 13px;
+    font-size: 12px;
     letter-spacing: -0.005em;
   }
 
   .controls-row{
     display:flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 18px;
+    gap: 10px;
+    margin-top: 0;
+  }
+
+  .top-actions{
+    grid-column: 2;
+    grid-row: 1 / 3;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:10px;
   }
 
   .seg{
@@ -101,8 +119,8 @@
     padding: 3px;
   }
   .seg button{
-    padding: 8px 16px;
-    font-size: 13px;
+    padding: 6px 12px;
+    font-size: 12px;
     font-weight: 500;
     letter-spacing: -0.005em;
     color: var(--ink-dim);
@@ -125,13 +143,13 @@
   .navbar{
     display:flex;
     align-items:center;
-    gap: 14px;
-    margin: 20px 0 24px;
+    gap: 10px;
+    margin: 10px 0 12px;
     flex-wrap: wrap;
   }
 
   .navbtn{
-    width: 40px; height: 40px;
+    width: 34px; height: 34px;
     display:flex; align-items:center; justify-content:center;
     background: var(--surface);
     border: 1px solid var(--border);
@@ -148,7 +166,7 @@
   .navbtn:disabled:hover{ background: var(--surface); }
 
   .period-label{
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 700;
     letter-spacing: -0.01em;
     min-width: 200px;
@@ -181,7 +199,7 @@
     border-radius: 999px;
     font-size: 13px;
     font-family: inherit;
-    padding: 8px 14px;
+    padding: 6px 12px;
     cursor: pointer;
     -webkit-appearance: none;
     appearance: none;
@@ -195,7 +213,7 @@
     font-size: 13px;
     font-weight: 500;
     font-family: inherit;
-    padding: 8px 16px;
+    padding: 6px 13px;
     border-radius: 999px;
     cursor: pointer;
     box-shadow: 0 1px 2px rgba(0,0,0,.04);
@@ -206,13 +224,21 @@
     display:flex;
     justify-content:flex-end;
     gap:14px;
-    margin:-12px 2px 14px;
+    margin-left:auto;
     color:var(--ink-dim);
     font-size:11px;
+    white-space:nowrap;
   }
   .holiday-legend span{ display:inline-flex; align-items:center; gap:6px; }
   .holiday-legend i{ width:9px; height:9px; border-radius:50%; display:inline-block; }
   .holiday-legend .holiday-key{ background:var(--holiday); }
+
+  @media (max-width: 760px){
+    .wrap{ padding-top: 14px; }
+    header.top{ display:block; }
+    .top-actions{ margin-top:10px; }
+    .controls-row{ justify-content:flex-start; }
+  }
 
   .card{
     background: var(--surface);
@@ -223,12 +249,19 @@
 
   /* Year view */
   .year-summary{
+    display:flex;
+    align-items:center;
+    gap:16px;
     font-size: 13.5px;
     color: var(--ink-dim);
     margin-bottom: 18px;
     padding: 14px 18px;
   }
   .year-summary b{ color: var(--ink); font-weight: 600; }
+  @media (max-width: 560px){
+    .year-summary{ align-items:flex-start; }
+    .year-summary .holiday-legend{ margin-top:2px; }
+  }
 
   .qgrid{
     display: grid;
@@ -408,6 +441,21 @@
     <h1>Apple Fiscal Calendar</h1>
     <div class="subtitle" id="subtitleText"></div>
 
+    <div class="top-actions">
+      <select id="yearSelect"></select>
+      <button class="todaybtn" id="todayBtn">Today</button>
+    </div>
+
+  </header>
+
+  <div class="navbar">
+    <button class="navbtn" id="prevBtn">&#8249;</button>
+    <div>
+      <div class="period-label" id="periodLabel"></div>
+      <div class="period-sub" id="periodSub"></div>
+    </div>
+    <button class="navbtn" id="nextBtn">&#8250;</button>
+    <div class="spacer"></div>
     <div class="controls-row">
       <div class="seg modeswitch" id="modeSwitch">
         <button data-mode="fiscal">Fiscal</button>
@@ -420,22 +468,6 @@
         <button data-view="week">Week</button>
       </div>
     </div>
-  </header>
-
-  <div class="navbar">
-    <button class="navbtn" id="prevBtn">&#8249;</button>
-    <div>
-      <div class="period-label" id="periodLabel"></div>
-      <div class="period-sub" id="periodSub"></div>
-    </div>
-    <button class="navbtn" id="nextBtn">&#8250;</button>
-    <div class="spacer"></div>
-    <select id="yearSelect"></select>
-    <button class="todaybtn" id="todayBtn">Today</button>
-  </div>
-
-  <div class="holiday-legend" aria-label="Calendar highlight legend">
-    <span><i class="holiday-key"></i>Holiday / Shutdown</span>
   </div>
 
   <div id="content"></div>
@@ -786,7 +818,9 @@
       ? '<b>' + meta.totalWeeks + ' weeks</b> total &middot; start <b>' + fmt(meta.start) + '</b> &middot; end <b>' + fmt(meta.end) + '</b>'
       : '<b>' + meta.totalDays + ' days</b> total &middot; start <b>' + fmt(meta.start) + '</b> &middot; end <b>' + fmt(meta.end) + '</b>';
 
-    let html = '<div class="card year-summary">' + summaryText + '</div><div class="qgrid">';
+    let html = '<div class="card year-summary"><span>' + summaryText + '</span>' +
+      '<div class="holiday-legend" aria-label="Calendar highlight legend"><span><i class="holiday-key"></i>Holiday / Shutdown</span></div>' +
+      '</div><div class="qgrid">';
     meta.quarters.forEach(q => {
       const isCurQ = isCurY && q.quarter === ds().allWeeks[d.currentIndex].quarter;
       const qname = mode === 'fiscal'
