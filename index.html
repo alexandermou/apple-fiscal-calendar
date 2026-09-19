@@ -214,6 +214,8 @@
     font-weight: 500;
     font-family: inherit;
     padding: 6px 13px;
+    min-width: 145px;
+    white-space: nowrap;
     border-radius: 999px;
     cursor: pointer;
     box-shadow: 0 1px 2px rgba(0,0,0,.04);
@@ -553,6 +555,7 @@
 
   const MONTH_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   const MONTH_ABBR = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const DAY_ABBR = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
   const now = new Date();
   const todayUTC = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
@@ -760,8 +763,11 @@
   const yearSelect = document.getElementById('yearSelect');
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
+  const todayBtn = document.getElementById('todayBtn');
   const subtitleText = document.getElementById('subtitleText');
   const pageTitle = document.getElementById('pageTitle');
+
+  todayBtn.textContent = 'Today \u00b7 ' + DAY_ABBR[todayUTC.getUTCDay()] + ', ' + MONTH_ABBR[todayUTC.getUTCMonth()] + ' ' + todayUTC.getUTCDate();
 
   const SUBTITLES = {
     fiscal: '5&ndash;4&ndash;4-style quarters',
@@ -1018,7 +1024,7 @@
     render();
   });
 
-  document.getElementById('todayBtn').addEventListener('click', () => {
+  todayBtn.addEventListener('click', () => {
     pointer[mode] = ds().currentIndex;
     render();
   });
